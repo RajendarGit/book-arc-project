@@ -15,6 +15,7 @@ const config: Config = {
       xl: '1440px',
     },
     colors: {
+      'white': '#ffffff',
       'black': '#000000',
       'green': '#39DC53',
       'green-dark': '#108422',

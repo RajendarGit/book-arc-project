@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en" data-theme="light">
       <body className={poppins.className}>
         <NavBar />
-        <main className="container">{children}</main>
+        <main className="container mx-auto">{children}</main>
         <Footer />
       </body>
     </html>
