@@ -12,9 +12,18 @@
     }
   
     .side-menu {
-      @apply fixed right-0 top-[70px] m-auto w-[320px] h-[100%] bg-grey-bg z-10 translate-x-0;
+      @apply fixed right-0 top-0 m-auto w-[310px] h-[100%] bg-white border-l-2 border-green z-10 translate-x-0;
       /* transform: translate3d(0%, 0, 0); */
       /* background-color: white; */
+    }
+    .breadcrumbs > ul > li + ::before {
+      @apply text-black;
+    }
+    .checkbox {
+      @apply rounded-[2px] w-[16px] h-[16px];
+    }
+    .checkbox:checked {
+      @apply rounded-[3px] bg-green;
     }
   }
   

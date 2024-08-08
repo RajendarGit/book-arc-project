@@ -1,10 +1,7 @@
-import Image from "next/image";
-import Header from "./components/shared/Header";
-
 export default function Home() {
   return (
     <>
-    <Header />
+    <h1>This is the Home Page</h1>
     </>
   );
 }

@@ -6,19 +6,19 @@ const Footer = () => {
   return (
     <footer>
       <div className="bg-footer-bg text-base-content p-12">
-        <div className="footer container mx-auto">
-          <aside>
+        <div className="grid lg:flex container mx-auto gap-10 lg:justify-between">
+          <aside className='md:w-2/4'>
             <div className="flex flex-col gap-8">
               <Image src="/logo.png" alt="Book Arc" width={100} height={100} />
               <div>
                 <p className="font-medium mb-2">Subscribe Now!</p>
-                <label className="input input-bordered flex items-center gap-2 rounded-full pr-1 h-[44px]">
+                <label className="input input-bordered flex items-center gap-2 rounded-full pr-1 h-[44px] md:w-[340px]">
                   <input
                     type="text"
-                    className="grow"
+                    className="grow w-full"
                     placeholder="Email Address"
                   />
-                  <button className="btn-circle btn-primary w-[37px] h-[37px] flex items-center justify-center">
+                  <button className="btn-circle btn-primary w-[42px] h-[37px] flex items-center justify-center">
                     <BsFillSendFill />
                   </button>
                 </label>
@@ -31,7 +31,7 @@ const Footer = () => {
               </div>
             </div>
           </aside>
-          <nav>
+          <nav className='md:w-1/4 flex flex-col gap-2'>
             <h6 className="text-black font-semibold">Popular Categories</h6>
             <a className="link link-hover text-[#7b7b7b]">
               Graphic Novels &nbsp; Comics
@@ -49,7 +49,7 @@ const Footer = () => {
               Educational &nbsp; Textbooks
             </a>
           </nav>
-          <nav>
+          <nav className='md:w-1/4 flex flex-col gap-2'>
             <h6 className="text-black font-semibold">Customer Care</h6>
             <a className="link link-hover text-[#7b7b7b]">My Account</a>
             <a className="link link-hover text-[#7b7b7b]">Discount</a>
@@ -57,7 +57,7 @@ const Footer = () => {
             <a className="link link-hover text-[#7b7b7b]">Orders History</a>
             <a className="link link-hover text-[#7b7b7b]">Order Tracking</a>
           </nav>
-          <nav>
+          <nav className='md:w-1/4 flex flex-col gap-2'>
             <h6 className="text-black font-semibold">Quick Action</h6>
             <a className="link link-hover text-[#7b7b7b]">Authors</a>
             <a className="link link-hover text-[#7b7b7b]">Books Compare</a>
@@ -68,7 +68,7 @@ const Footer = () => {
       </div>
       <div className="copyrights bg-[#373737] py-4">
         <div className="container mx-auto">
-          <div className="flex items-center justify-between">
+          <div className="grid lg:flex items-center justify-center lg:justify-between text-center lg:text-left gap-4 lg:gap-0">
             <div>
               <p className='text-white'>© Ref Hub - All Rights Reserved</p>
             </div>
