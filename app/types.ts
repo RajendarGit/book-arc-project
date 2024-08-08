@@ -1,9 +1,12 @@
 export interface ProductProps {
-    image: string;
+    id?: number;
+    image?: any;
+    thumbnail?: any;
     title: string;
     category: string;
     price: string;
     rating: number;
-    thumbnail: string;
+    tags?: string[];
+    oneProduct?: boolean;
   }
   

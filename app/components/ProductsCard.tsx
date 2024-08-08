@@ -9,14 +9,28 @@ const ProductsCard: FC<ProductProps> = ({
   category,
   price,
   rating,
+  tags,
+  oneProduct = false,
 }) => {
   return (
-    <div className="card bg-base-100 w-full shadow-xl hover:border border-green">
-      <figure className="bg-grey-bg">
-        <Image src={image} alt="Shoes" width={400} height={400} />
+    <div
+      className={
+        oneProduct
+          ? "lg:flex lg:mx-auto"
+          : "card bg-base-100 w-full shadow-xl hover:border border-green"
+      }
+    >
+      <figure className={oneProduct ? 'lg:w-[30%] lg:flex grid items-center justify-center bg-grey-bg' : 'bg-grey-bg'}>
+        <Image src={image} alt={title} width={220} height={230} />
       </figure>
-      <div className="card-body grid gap-3">
-        <h2 className="card-title font-medium">{title.length > 15 ? title.slice(0, 15) + "..." : title}</h2>
+      <div className="card-body grid gap-3 flex-grow-0">
+        <h2 className="card-title font-medium">
+          {oneProduct
+            ? title
+            : title.length > 15
+            ? title.slice(0, 15) + "..."
+            : title}
+        </h2>
         <p className="mb-2 text-grey">{category}</p>
         <p className="text-xl text-green-dark font-medium">$ {price}</p>
         <div className="flex items-center gap-2">
@@ -29,6 +43,28 @@ const ProductsCard: FC<ProductProps> = ({
             />
           ))}
         </div>
+        <div className="sm:flex items-center gap-4">
+          <p className="my-3 sm:my-0">Category:</p>
+          <div className="flex gap-2">
+            {tags?.map((tag, index) => (
+              <p
+                key={index}
+                className="bg-green bg-opacity-15 text-green-dark py-[4px] px-[15px] text-center rounded-2xl"
+              >
+                {tag}
+              </p>
+            ))}
+          </div>
+        </div>
+        {oneProduct ? (
+          <>
+          <div className="card-actions justify-start my-3">
+            <button className="btn min-w-[120px] btn-primary">Buy Now</button>
+            <button className="btn min-w-[120px]">Add to cart</button>
+          </div>
+          <p className="text-grey">Lifetime Access</p>
+          </>
+        ) : null}
       </div>
     </div>
   );

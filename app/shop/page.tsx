@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/shared/Header';
 import FilterSection from '../components/FilterSection';
 import Wrapper from '../components/shared/Wrapper';
@@ -10,9 +10,13 @@ import Loading from './Loading';
 import Link from 'next/link';
 import { AppDispatch } from '../store';
 
+const ITEMS_PER_PAGE = 6;
+
 const Shop = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+
   const dispatch: AppDispatch = useDispatch();
-  const products = useSelector(selectAllProducts) as Product[];
+  const products = useSelector(selectAllProducts);
   const status = useSelector(selectProductsStatus);
   const error = useSelector(selectProductsError);
 
@@ -28,6 +32,14 @@ const Shop = () => {
     return <p>Error: {error}</p>;
   }
 
+  const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const selectedProducts = products.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <Wrapper>
       <Header />
@@ -36,18 +48,29 @@ const Shop = () => {
           <FilterSection />
         </div>
         <div className="md:w-10/12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products.map((product) => (
+          <div className="responsive-cards">
+            {selectedProducts.map((product) => (
               <Link href={`/shop/${product.id}`} key={product.id}>
                 <ProductsCard 
                   image={product.thumbnail}
-                  thumbnail={product.thumbnail}
                   title={product.title}
                   category={product.category}
                   price={product.price.toString()}
                   rating={product.rating}
                 />
               </Link>
+            ))}
+          </div>
+
+          <div className="flex gap-2 items-center justify-center my-14">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                className={`join-item btn ${currentPage === index + 1 ? 'btn-primary' : ''}`}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                {index + 1}
+              </button>
             ))}
           </div>
         </div>

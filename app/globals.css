@@ -6,15 +6,11 @@
     .btn {
       @apply py-1.5 px-3 border-0 font-semibold;
     }
-  
     .btn-primary {
       @apply bg-green text-black hover:bg-green-dark;
     }
-  
     .side-menu {
-      @apply fixed right-0 top-0 m-auto w-[310px] h-[100%] bg-white border-l-2 border-green z-10 translate-x-0;
-      /* transform: translate3d(0%, 0, 0); */
-      /* background-color: white; */
+      @apply fixed right-0 top-0 m-auto w-[310px] md:w-[280px] lg:w-[310px] h-[100%] bg-white border-l-2 border-green z-10 translate-x-0;
     }
     .breadcrumbs > ul > li + ::before {
       @apply text-black;
@@ -31,7 +27,6 @@
     .active-link {
       @apply font-bold text-black;
     }
-  
     .active-link::after {
       @apply content-[''] absolute bottom-0 left-[50%] translate-x-[-50] w-[5px] h-[5px] bg-green rounded;
     }

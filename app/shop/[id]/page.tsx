@@ -10,6 +10,10 @@ import {
 import Loading from "./Loading";
 import ProductsCard from "@/app/components/ProductsCard";
 import { AppDispatch } from "@/app/store";
+import Wrapper from "@/app/components/shared/Wrapper";
+import Link from "next/link";
+import { BsHouse } from "react-icons/bs";
+
 
 interface ProductPageProps {
   params: {
@@ -19,7 +23,7 @@ interface ProductPageProps {
 
 const ProductPage: FC<ProductPageProps> = ({ params: { id } }) => {
   const dispatch: AppDispatch = useDispatch();
-  const products = useSelector(selectAllProducts) as Product[];
+  const products = useSelector(selectAllProducts);
   const status = useSelector(selectProductsStatus);
   const error = useSelector(selectProductsError);
 
@@ -44,16 +48,37 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id } }) => {
   }
 
   return (
-    <div className="justify-center items-center max-w-md mx-auto">
+    <Wrapper>
+        <div className="breadcrumbs text-sm my-5">
+          <ul>
+            <li>
+              <Link href='/' className='text-grey flex gap-1'>
+                <BsHouse/>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href='/shop' className='text-black'>
+                Shop Page
+              </Link>
+            </li>
+            <li>
+              <Link href='/shop' className='text-black'>
+                {product.title}
+              </Link>
+            </li>
+          </ul>
+        </div>
       <ProductsCard
         image={product.thumbnail}
-        thumbnail={product.thumbnail}
         title={product.title}
         category={product.category}
         price={product.price.toString()}
         rating={product.rating}
+        tags={product.tags}
+        oneProduct={true}
       />
-    </div>
+    </Wrapper>
   );
 };
 
