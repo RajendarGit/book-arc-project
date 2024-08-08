@@ -36,3 +36,11 @@
       @apply content-[''] absolute bottom-0 left-[50%] translate-x-[-50] w-[5px] h-[5px] bg-green rounded;
     }
   }
+
+  @layer base {
+    .responsive-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+  }

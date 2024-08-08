@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { NavBar } from "./components/shared/NavBar";
 import Footer from "./components/shared/Footer";
+import Providers from "./providers";
 
 const poppins = Poppins({
   weight: ['400', '500', '700'],
@@ -20,6 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <Providers>
     <html lang="en" data-theme="light">
       <body className={poppins.className}>
         <NavBar />
@@ -27,5 +29,6 @@ export default function RootLayout({
         <Footer />
       </body>
     </html>
+    </Providers>
   );
 }

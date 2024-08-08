@@ -1,14 +1,7 @@
 import Image from "next/image";
 import React, { FC } from "react";
 import { BsStarFill } from "react-icons/bs";
-
-interface ProductProps {
-  image: string;
-  title: string;
-  category: string;
-  price: string;
-  rating: number;
-}
+import { ProductProps } from "../types";
 
 const ProductsCard: FC<ProductProps> = ({
   image,
@@ -18,12 +11,12 @@ const ProductsCard: FC<ProductProps> = ({
   rating,
 }) => {
   return (
-    <div className="card bg-base-100 w-96 shadow-xl">
-      <figure>
+    <div className="card bg-base-100 w-full shadow-xl hover:border border-green">
+      <figure className="bg-grey-bg">
         <Image src={image} alt="Shoes" width={400} height={400} />
       </figure>
       <div className="card-body grid gap-3">
-        <h2 className="card-title font-medium">{title}</h2>
+        <h2 className="card-title font-medium">{title.length > 15 ? title.slice(0, 15) + "..." : title}</h2>
         <p className="mb-2 text-grey">{category}</p>
         <p className="text-xl text-green-dark font-medium">$ {price}</p>
         <div className="flex items-center gap-2">

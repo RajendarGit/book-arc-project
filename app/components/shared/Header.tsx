@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react'
 import { BsHouse } from "react-icons/bs";
 
@@ -8,15 +9,15 @@ const Header = () => {
         <div className="breadcrumbs text-sm">
           <ul>
             <li>
-              <a className='text-grey flex gap-1'>
+              <Link href='/' className='text-grey flex gap-1'>
                 <BsHouse/>
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a className='text-black'>
+              <Link href='/shop' className='text-black'>
                 Shop Page
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
