@@ -20,7 +20,7 @@ const ProductsCard: FC<ProductProps> = ({
           : "card bg-base-100 w-full shadow-xl hover:border border-green"
       }
     >
-      <figure className={oneProduct ? 'lg:w-[30%] lg:flex grid items-center justify-center bg-grey-bg' : 'bg-grey-bg'}>
+      <figure className={oneProduct ? 'lg:w-[30%] lg:flex grid items-center justify-center bg-grey-bg rounded-xl' : 'bg-grey-bg'}>
         <Image src={image} alt={title} width={220} height={230} />
       </figure>
       <div className="card-body grid gap-3 flex-grow-0">

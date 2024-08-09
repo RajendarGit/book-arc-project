@@ -1,11 +1,13 @@
 import LoadingSkeleton from '@/app/components/shared/LoadingSkeleton'
-import React from 'react'
+import React, { FC } from 'react'
 
-const Loading = () => {
+interface LoadingProps {
+  oneProduct?: boolean;
+}
+
+const Loading:FC<LoadingProps> = ({oneProduct = false}) => {
   return (
-    <div className="justify-center items-center max-w-md mx-auto">
-        <LoadingSkeleton />
-    </div>
+    <LoadingSkeleton oneProduct={oneProduct} />
   )
 }
 

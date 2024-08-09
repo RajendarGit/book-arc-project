@@ -8,5 +8,6 @@ export interface ProductProps {
     rating: number;
     tags?: string[];
     oneProduct?: boolean;
+    description?: string;
   }
   

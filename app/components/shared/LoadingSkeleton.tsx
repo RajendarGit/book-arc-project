@@ -1,12 +1,22 @@
-const LoadingSkeleton = () => {
+import { FC } from "react";
+
+interface LoadinProps {
+  oneProduct?: boolean;
+}
+const LoadingSkeleton:FC<LoadinProps> = ({oneProduct = false}) => {
     return (
-      <div className="card bg-base-300 shadow-xl">
-        <div className="bg-slate-950 min-h-[150px]"></div>
-        <div className="card-body">
-          <div className="bg-slate-800 min-w-[70%] min-h-[24px]"></div>
-          <div className="bg-slate-800 min-w-[100%] min-h-[150px]"></div>
-        </div>
-      </div>
+      <>
+        {oneProduct ? (
+          <div className="skeleton h-[150px] w-full"></div>
+        ) : (
+          <div className="flex w-full flex-col gap-4">
+            <div className="skeleton h-32 w-full"></div>
+            <div className="skeleton h-4 w-28"></div>
+            <div className="skeleton h-4 w-full"></div>
+            <div className="skeleton h-4 w-full"></div>
+          </div>
+        )}
+      </>
     );
   };
   

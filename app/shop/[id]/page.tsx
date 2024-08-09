@@ -13,15 +13,16 @@ import { AppDispatch } from "@/app/store";
 import Wrapper from "@/app/components/shared/Wrapper";
 import Link from "next/link";
 import { BsHouse } from "react-icons/bs";
-
+import ProductsDetailsTab from "@/app/components/ProductsDetailsTab";
 
 interface ProductPageProps {
   params: {
     id: number;
+    category: string;
   };
 }
 
-const ProductPage: FC<ProductPageProps> = ({ params: { id } }) => {
+const ProductPage: FC<ProductPageProps> = ({ params: { id, category } }) => {
   const dispatch: AppDispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const status = useSelector(selectProductsStatus);
@@ -33,15 +34,14 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id } }) => {
     }
   }, [dispatch, status]);
 
-  if (status === "loading") {
-    return <Loading />;
-  }
-
   if (status === "failed") {
     return <p>Error: {error}</p>;
   }
 
   const product = products.find((product) => product.id === Number(id));
+  const recommendedProducts = products.filter(
+    (product) => product.category === category && product.id !== Number(id)
+  );
 
   if (!product) {
     return <p>Product not found.</p>;
@@ -49,35 +49,60 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id } }) => {
 
   return (
     <Wrapper>
-        <div className="breadcrumbs text-sm my-5">
-          <ul>
-            <li>
-              <Link href='/' className='text-grey flex gap-1'>
-                <BsHouse/>
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href='/shop' className='text-black'>
-                Shop Page
-              </Link>
-            </li>
-            <li>
-              <Link href='/shop' className='text-black'>
-                {product.title}
-              </Link>
-            </li>
-          </ul>
-        </div>
-      <ProductsCard
-        image={product.thumbnail}
-        title={product.title}
-        category={product.category}
-        price={product.price.toString()}
-        rating={product.rating}
-        tags={product.tags}
-        oneProduct={true}
-      />
+      <div className="breadcrumbs text-sm my-5 hidden md:inline-flex">
+        <ul>
+          <li>
+            <Link href="/" className="text-grey flex gap-1">
+              <BsHouse />
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link href="/shop" className="text-black">
+              Shop Page
+            </Link>
+          </li>
+          <li>
+            <Link href="/shop" className="text-black">
+              {product.title}
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <>
+        {status === "loading" ? (
+          <Loading oneProduct={true} />
+        ) : (
+          <ProductsCard
+            image={product.thumbnail}
+            title={product.title}
+            category={product.category}
+            price={product.price.toString()}
+            rating={product.rating}
+            tags={product.tags}
+            oneProduct={true}
+          />
+        )}
+      </>
+      <ProductsDetailsTab description={product.description} />
+      <h4 className="font-medium text-xl mb-8">Related Products</h4>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {recommendedProducts.length > 0 ? (
+          recommendedProducts.map((recomendedProduct) => (
+            <ProductsCard
+              key={recomendedProduct.id}
+              image={recomendedProduct.thumbnail}
+              title={recomendedProduct.title}
+              category={recomendedProduct.category}
+              price={recomendedProduct.price.toString()}
+              rating={recomendedProduct.rating}
+              tags={recomendedProduct.tags}
+            />
+          ))
+        ) : (
+          <p>No related products found.</p>
+        )}
+      </div>
     </Wrapper>
   );
 };

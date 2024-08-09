@@ -1,7 +1,10 @@
+import Hero from "./components/shared/Hero";
+import Wrapper from "./components/shared/Wrapper";
+
 export default function Home() {
   return (
-    <>
-    <h1>This is the Home Page</h1>
-    </>
+    <Wrapper>
+    <Hero />
+    </Wrapper>
   );
 }
