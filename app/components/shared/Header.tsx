@@ -1,8 +1,19 @@
 import Link from 'next/link';
-import React from 'react'
-import { BsHouse } from "react-icons/bs";
+import React, { FC, ReactNode } from 'react';
+import { BsHouse } from 'react-icons/bs';
 
-const Header = () => {
+interface BreadcrumbItem {
+  title: ReactNode;
+  link: string;
+}
+
+interface HeaderProps {
+  breadcrumbs: BreadcrumbItem[];
+  headerTitle: ReactNode;
+  headerSubtitle: string;
+}
+
+const Header: FC<HeaderProps> = ({ breadcrumbs, headerTitle, headerSubtitle }) => {
   return (
     <div className="card bg-footer-bg text-neutral-content mt-5 mb-14">
       <div className="card-body items-center text-center">
@@ -10,22 +21,26 @@ const Header = () => {
           <ul>
             <li>
               <Link href='/' className='text-grey flex gap-1'>
-                <BsHouse/>
+                <BsHouse />
                 Home
               </Link>
             </li>
-            <li>
-              <Link href='/shop' className='text-black'>
-                Shop Page
-              </Link>
-            </li>
+            {breadcrumbs.map((breadcrumb, index) => (
+              <li key={index}>
+                <Link href={breadcrumb.link} className='text-black'>
+                  {breadcrumb.title}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
-        <h2 className="text-3xl text-black mb-2">Read and add your <span className='text-green'>insight</span></h2>
-        <p className='text-black'>find your favorite book and read it here for free</p>
+        <h2 className="text-3xl text-black mb-2">
+          {headerTitle}
+        </h2>
+        <p className='text-black'>{headerSubtitle}</p>
       </div>
     </div>
   );
 }
 
-export default Header
+export default Header;

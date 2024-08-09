@@ -44,9 +44,21 @@ const Shop = () => {
     setCurrentPage(page);
   };
 
+  const breadcrumbs = [
+    { title: 'Shop', link: '/shop' },
+  ];
+
   return (
     <Wrapper>
-      <Header />
+      <Header
+        breadcrumbs={breadcrumbs}
+        headerTitle={
+          <>
+            Read and add your <span className='text-green'>insight</span>
+          </>
+        }
+        headerSubtitle="find your favorite book and read it here for free"
+      />
       <section className="md:flex md:flex-row md:gap-20 px-6 xl:px-0">
         <div className="lg:w-2/12 mb-10 lg:mb-0">
           <FilterSection />

@@ -24,6 +24,7 @@ const config: Config = {
       'grey-bg': '#F2F2F2',
       'footer-bg': '#F4F4F4',
       'nav-link': '#686868',
+      'error': '#FB2323',
     },
   },
   plugins: [

@@ -44,7 +44,7 @@ const ProductsCard: FC<ProductProps> = ({
           ))}
         </div>
         <div className="sm:flex items-center gap-4">
-          <p className="my-3 sm:my-0">Category:</p>
+          <p className="my-3 sm:my-0 flex-grow-0">Category:</p>
           <div className="flex gap-2">
             {tags?.map((tag, index) => (
               <p
