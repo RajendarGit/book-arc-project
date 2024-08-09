@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchProducts,
@@ -14,6 +14,8 @@ import Wrapper from "@/app/components/shared/Wrapper";
 import Link from "next/link";
 import { BsHouse } from "react-icons/bs";
 import ProductsDetailsTab from "@/app/components/ProductsDetailsTab";
+import { addToCart } from "@/app/features/cartSlice"; 
+import Alert from "@/app/components/shared/Alert";
 
 interface ProductPageProps {
   params: {
@@ -27,6 +29,8 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id, category } }) => {
   const products = useSelector(selectAllProducts);
   const status = useSelector(selectProductsStatus);
   const error = useSelector(selectProductsError);
+
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     if (status === "idle") {
@@ -47,9 +51,17 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id, category } }) => {
     return <p>Product not found.</p>;
   }
 
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 2000);
+  };
+
   return (
     <Wrapper>
-      <div className="breadcrumbs text-sm my-5 hidden md:inline-flex">
+      <div className="breadcrumbs text-sm my-5 hidden md:inline-flex px-8 xl:px-0">
         <ul>
           <li>
             <Link href="/" className="text-grey flex gap-1">
@@ -63,7 +75,7 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id, category } }) => {
             </Link>
           </li>
           <li>
-            <Link href="/shop" className="text-black">
+            <Link href="" className="text-black">
               {product.title}
             </Link>
           </li>
@@ -73,36 +85,42 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id, category } }) => {
         {status === "loading" ? (
           <Loading oneProduct={true} />
         ) : (
-          <ProductsCard
-            image={product.thumbnail}
-            title={product.title}
-            category={product.category}
-            price={product.price.toString()}
-            rating={product.rating}
-            tags={product.tags}
-            oneProduct={true}
-          />
+          <>
+            <ProductsCard
+              image={product.thumbnail}
+              title={product.title}
+              category={product.category}
+              price={product.price}
+              rating={product.rating}
+              tags={product.tags}
+              oneProduct={true}
+              addToCart={handleAddToCart} 
+            />
+          </>
         )}
       </>
       <ProductsDetailsTab description={product.description} />
-      <h4 className="font-medium text-xl mb-8">Related Products</h4>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {recommendedProducts.length > 0 ? (
-          recommendedProducts.map((recomendedProduct) => (
-            <ProductsCard
-              key={recomendedProduct.id}
-              image={recomendedProduct.thumbnail}
-              title={recomendedProduct.title}
-              category={recomendedProduct.category}
-              price={recomendedProduct.price.toString()}
-              rating={recomendedProduct.rating}
-              tags={recomendedProduct.tags}
-            />
-          ))
-        ) : (
-          <p>No related products found.</p>
-        )}
+      <div className="px-8 xl:px-0">
+        <h4 className="font-medium text-xl mb-8">Related Products</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {recommendedProducts.length > 0 ? (
+            recommendedProducts.map((recomendedProduct) => (
+              <ProductsCard
+                key={recomendedProduct.id}
+                image={recomendedProduct.thumbnail}
+                title={recomendedProduct.title}
+                category={recomendedProduct.category}
+                price={recomendedProduct.price}
+                rating={recomendedProduct.rating}
+                tags={recomendedProduct.tags}
+              />
+            ))
+          ) : (
+            <p>No related products found.</p>
+          )}
+        </div>
       </div>
+      {showAlert && <Alert text="Product added to cart." />}
     </Wrapper>
   );
 };

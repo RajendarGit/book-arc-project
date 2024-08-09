@@ -1,24 +1,35 @@
-import React, { FC } from 'react'
+import Link from 'next/link';
+import React, { FC } from 'react';
 import { BsCart } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
+import { useSelector } from 'react-redux';
+import { selectCartItems } from '@/app/features/cartSlice';
 
 interface NavActionProps {
-  SearchClick?: () => void;
+  searchClick?: () => void;
 }
 
-const NavActions:FC<NavActionProps> = ({SearchClick}) => {
+const NavActions: FC<NavActionProps> = ({ searchClick }) => {
+  const cartItems = useSelector(selectCartItems);
+  const productCount = cartItems.length;
+
   return (
-    <div className="flex gap-4">
-      <button className="py-1.5 px-3" onClick={SearchClick}>
+    <div className="flex gap-4 items-center">
+      <button onClick={searchClick}>
         <BsSearch />
       </button>
-      <button className="py-1.5 px-3">
+      <Link href='/cart' className='mx-4 relative'>
         <BsCart />
-      </button>
+        {productCount > 0 && (
+          <span className='absolute top-[-10px] right-[-10px] rounded-full bg-green text-white px-1 py-0.5 text-xs'>
+            {productCount}
+          </span>
+        )}
+      </Link>
       <button className="btn">Sign In</button>
       <button className="btn btn-primary">Register</button>
     </div>
   );
 }
 
-export default NavActions
+export default NavActions;

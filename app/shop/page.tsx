@@ -75,7 +75,7 @@ const Shop = () => {
                       image={product.thumbnail}
                       title={product.title}
                       category={product.category}
-                      price={product.price.toString()}
+                      price={product.price}
                       rating={product.rating}
                     />
                   </Link>

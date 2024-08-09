@@ -70,10 +70,10 @@ export const NavBar = () => {
                 />
               </div>
             )}
-            <div className="hidden lg:flex">
+            <div className="hidden lg:flex mt-2">
               <NavLinks navClick={() => setOpenSearch(false)} />
             </div>
-            <NavActions SearchClick={() => setOpenSearch(true)} />
+            <NavActions searchClick={() => setOpenSearch(true)} />
           </div>
         </div>
       </nav>

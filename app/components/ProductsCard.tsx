@@ -11,6 +11,7 @@ const ProductsCard: FC<ProductProps> = ({
   rating,
   tags,
   oneProduct = false,
+  addToCart
 }) => {
   return (
     <div
@@ -60,7 +61,7 @@ const ProductsCard: FC<ProductProps> = ({
           <>
           <div className="card-actions justify-start my-3">
             <button className="btn min-w-[120px] btn-primary">Buy Now</button>
-            <button className="btn min-w-[120px]">Add to cart</button>
+            <button className="btn min-w-[120px]" onClick={addToCart}>Add to cart</button>
           </div>
           <p className="text-grey">Lifetime Access</p>
           </>
