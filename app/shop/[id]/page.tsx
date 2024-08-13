@@ -94,7 +94,7 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id } }) => {
               rating={product.rating}
               tags={product.tags}
               oneProduct={true}
-              addToCart={handleAddToCart} 
+              addToCart={handleAddToCart}
             />
           </>
         )}
@@ -105,14 +105,18 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id } }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {recommendedProducts.length > 0 ? (
             recommendedProducts.map((recomendedProduct) => (
-              <ProductsCard
+              <Link
+                href={`/shop/${recomendedProduct.id}`}
                 key={recomendedProduct.id}
-                image={recomendedProduct.thumbnail}
-                title={recomendedProduct.title}
-                category={recomendedProduct.category}
-                price={recomendedProduct.price}
-                rating={recomendedProduct.rating}
-              />
+              >
+                <ProductsCard
+                  image={recomendedProduct.thumbnail}
+                  title={recomendedProduct.title}
+                  category={recomendedProduct.category}
+                  price={recomendedProduct.price}
+                  rating={recomendedProduct.rating}
+                />
+              </Link>
             ))
           ) : (
             <p>No related products found.</p>
