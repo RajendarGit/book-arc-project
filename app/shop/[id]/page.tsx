@@ -19,12 +19,11 @@ import Alert from "@/app/components/shared/Alert";
 
 interface ProductPageProps {
   params: {
-    id: number;
-    category: string;
+    id: string;
   };
 }
 
-const ProductPage: FC<ProductPageProps> = ({ params: { id, category } }) => {
+const ProductPage: FC<ProductPageProps> = ({ params: { id } }) => {
   const dispatch: AppDispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const status = useSelector(selectProductsStatus);
@@ -33,10 +32,10 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id, category } }) => {
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
-    if (status === "idle") {
+    if (status === "idle" || products.length === 0) {
       dispatch(fetchProducts());
     }
-  }, [dispatch, status]);
+  }, [dispatch, status, products.length]);
 
   if (status === "failed") {
     return <p>Error: {error}</p>;
@@ -44,7 +43,8 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id, category } }) => {
 
   const product = products.find((product) => product.id === Number(id));
   const recommendedProducts = products.filter(
-    (product) => product.category === category && product.id !== Number(id)
+    (productItem) => 
+      productItem.category === product?.category && productItem.id !== Number(id)
   );
 
   if (!product) {
@@ -102,7 +102,7 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id, category } }) => {
       <ProductsDetailsTab description={product.description} />
       <div className="px-8 xl:px-0">
         <h4 className="font-medium text-xl mb-8">Related Products</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {recommendedProducts.length > 0 ? (
             recommendedProducts.map((recomendedProduct) => (
               <ProductsCard
@@ -112,7 +112,6 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id, category } }) => {
                 category={recomendedProduct.category}
                 price={recomendedProduct.price}
                 rating={recomendedProduct.rating}
-                tags={recomendedProduct.tags}
               />
             ))
           ) : (
