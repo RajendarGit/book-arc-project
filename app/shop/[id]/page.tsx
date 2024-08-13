@@ -12,10 +12,10 @@ import ProductsCard from "@/app/components/ProductsCard";
 import { AppDispatch } from "@/app/store";
 import Wrapper from "@/app/components/shared/Wrapper";
 import Link from "next/link";
-import { BsHouse } from "react-icons/bs";
 import ProductsDetailsTab from "@/app/components/ProductsDetailsTab";
 import { addToCart } from "@/app/features/cartSlice"; 
 import Alert from "@/app/components/shared/Alert";
+import Breadcrumbs from "@/app/components/shared/Breadcrumbs";
 
 interface ProductPageProps {
   params: {
@@ -29,6 +29,10 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id } }) => {
   const status = useSelector(selectProductsStatus);
   const error = useSelector(selectProductsError);
 
+  const [breadcrumbs, setBreadcrumbs] = useState([
+    { title: 'Shop', link: '/shop' },
+  ]);
+
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
@@ -37,15 +41,35 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id } }) => {
     }
   }, [dispatch, status, products.length]);
 
-  if (status === "failed") {
-    return <p>Error: {error}</p>;
-  }
-
   const product = products.find((product) => product.id === Number(id));
   const recommendedProducts = products.filter(
     (productItem) => 
       productItem.category === product?.category && productItem.id !== Number(id)
   );
+
+  useEffect(() => {
+    if (product) {
+      setBreadcrumbs((prev) => {
+        const isProductInBreadcrumbs = prev.some(
+          (breadcrumb) => breadcrumb.title === product.title
+        );
+  
+        if (!isProductInBreadcrumbs) {
+          return [
+            ...prev,
+            { title: product.title, link: `/shop/${product.id}` }
+          ];
+        }
+  
+        return prev;
+      });
+    }
+  }, [product]);
+  
+
+  if (status === "failed") {
+    return <p>Error: {error}</p>;
+  }
 
   if (!product) {
     return <p>Product not found.</p>;
@@ -61,26 +85,7 @@ const ProductPage: FC<ProductPageProps> = ({ params: { id } }) => {
 
   return (
     <Wrapper>
-      <div className="breadcrumbs text-sm my-5 hidden md:inline-flex px-8 xl:px-0">
-        <ul>
-          <li>
-            <Link href="/" className="text-grey flex gap-1">
-              <BsHouse />
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link href="/shop" className="text-black">
-              Shop Page
-            </Link>
-          </li>
-          <li>
-            <Link href="" className="text-black">
-              {product.title}
-            </Link>
-          </li>
-        </ul>
-      </div>
+      <Breadcrumbs breadcrumbs={breadcrumbs} /> 
       <>
         {status === "loading" ? (
           <Loading oneProduct={true} />
