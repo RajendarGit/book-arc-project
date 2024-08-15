@@ -1,6 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import { paymentMethodSchema } from '../validation/paymentMethodSchema';
+import { PaymentMethodFormErrors } from '../types';
+import CountrySelection from './shared/CountrySelection';
 
-const PaymentMethod = () => {
+type CountryOption = {
+    value: string;
+    label: string;
+  };
+
+const PaymentMethod: React.FC = () => {
+  const [errors, setErrors] = useState<Partial<PaymentMethodFormErrors>>({});
+  const [selectedCountry, setSelectedCountry] = useState<{ value: string; label: string } | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const values: PaymentMethodFormErrors = {
+      firstName: formData.get('firstName') as string,
+      lastName: formData.get('lastName') as string,
+      country: selectedCountry?.value || '',
+    };
+
+    try {
+      paymentMethodSchema.parse(values);
+      // If successful, submit the data
+    } catch (err: any) {
+      setErrors(err.errors.reduce((acc: Partial<PaymentMethodFormErrors>, curr: any) => ({
+        ...acc,
+        [curr.path[0]]: curr.message,
+      }), {}));
+    }
+  };
+
   return (
     <section className="mt-10 xl:mt-20">
       <h4 className="font-medium text-xl mb-4">Payment method</h4>
@@ -37,48 +73,50 @@ const PaymentMethod = () => {
           </label>
         </div>
       </div>
-      <div className="card bg-grey-bg p-8 grid gap-8 mt-5">
-        <div className="grid grid-cols-1">
-          <label htmlFor="" className="mb-3 block">
-            Country
-          </label>
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input w-full input-bordered"
-          />
-        </div>
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          <div>
-            <label htmlFor="" className="mb-3 block">
-              First Name
-            </label>
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input w-full input-bordered"
-            />
+      <div className="card bg-grey-bg p-8 mt-5">
+        <form onSubmit={handleSubmit} className="grid gap-8">
+          <div className="grid grid-cols-1">
+            {isMounted && <CountrySelection
+              value={selectedCountry}
+              onChange={(newValue) => setSelectedCountry(newValue)}
+            />}
+            {errors.country && <p className="text-error">{errors.country}</p>}
           </div>
-          <div>
-            <label htmlFor="" className="mb-3 block">
-              Last Name
-            </label>
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input w-full input-bordered"
-            />
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="firstName" className="mb-3 block">
+                First Name
+              </label>
+              <input
+                name="firstName"
+                type="text"
+                placeholder="Type here"
+                className="input w-full input-bordered"
+              />
+              {errors.firstName && (
+                <p className="text-error">{errors.firstName}</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="lastName" className="mb-3 block">
+                Last Name
+              </label>
+              <input
+                name="lastName"
+                type="text"
+                placeholder="Type here"
+                className="input w-full input-bordered"
+              />
+              {errors.lastName && (
+                <p className="text-error">{errors.lastName}</p>
+              )}
+            </div>
           </div>
-        </div>
-        <button className="btn btn-primary">Pay $59.35</button>
-        <p className="text-grey">
-          Your personal data will be used to process your order, support your
-          experience throughout this website, and for other purposes described
-          in our privacy policy.
-        </p>
+          <button className="btn btn-primary">Pay $59.35</button>
+        </form>
       </div>
     </section>
   );
-}
+};
 
-export default PaymentMethod
+export default PaymentMethod;

@@ -5,6 +5,7 @@ import Wrapper from "../components/shared/Wrapper";
 import Breadcrumbs from "../components/shared/Breadcrumbs";
 import BillingDetails from "../components/BillingDetails";
 import PaymentMethod from "../components/PaymentMethod";
+import OrderSummary from "../components/OrderSummary";
 
 const CheckoutPage = () => {
   const breadcrumbs = [
@@ -17,16 +18,12 @@ const CheckoutPage = () => {
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="px-8 xl:px-0">
         <div className="grid lg:flex lg:flex-row gap-6">
-          <div className="w-full lg:w-6/12 xl:w-7/12">
+          <div className="w-full lg:w-6/12 xl:w-8/12">
             <BillingDetails />
             <PaymentMethod />
           </div>
-          <div className="w-full lg:w-6/12 xl:w-5/12">
-            <div className="card bg-grey-bg p-8">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, repellat!
-              </p>
-            </div>
+          <div className="w-full lg:w-6/12 xl:w-4/12">
+          <OrderSummary OrderSummary={true} />
           </div>
         </div>
       </div>

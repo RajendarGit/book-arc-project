@@ -8,6 +8,7 @@ import { removeFromCart, updateQuantity, selectCartItems, selectCartTotal } from
 import Image from 'next/image';
 import { AppDispatch } from '../store';
 import withCartProtection from '../hoc/withCartProtection';
+import OrderSummary from '../components/OrderSummary';
 
 const Cart = () => {
   const breadcrumbs = [{ title: "Cart Page", link: "/cart" }];
@@ -39,7 +40,7 @@ const Cart = () => {
         headerSubtitle="Explore, Purchase, and Enjoy Your Favourite Ebooks Anytime, Anywhere"
       />
       <div className="grid lg:flex justify-center lg:justify-between gap-5">
-        <div className="overflow-x-auto flex-grow">
+        <div className="overflow-x-auto w-full lg:w-6/12 xl:w-8/12">
           <table className="table">
             <thead>
               <tr>
@@ -70,27 +71,44 @@ const Cart = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="font-medium">${item.product.price.toFixed(2)}</td>
+                  <td className="font-medium">
+                    ${item.product.price.toFixed(2)}
+                  </td>
                   <td>
                     <div className="flex gap-4">
                       <button
                         className="text-grey"
-                        onClick={() => handleQuantityChange(item.product.id, Math.max(1, item.quantity - 1))}
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.product.id,
+                            Math.max(1, item.quantity - 1)
+                          )
+                        }
                       >
                         -
                       </button>
                       <span className="text-grey">{item.quantity}</span>
                       <button
                         className="text-grey"
-                        onClick={() => handleQuantityChange(item.product.id, item.quantity + 1)}
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.product.id,
+                            item.quantity + 1
+                          )
+                        }
                       >
                         +
                       </button>
                     </div>
                   </td>
-                  <td className="font-medium">${(item.product.price * item.quantity).toFixed(2)}</td>
+                  <td className="font-medium">
+                    ${(item.product.price * item.quantity).toFixed(2)}
+                  </td>
                   <th>
-                    <button className="btn btn-ghost btn-sm text-error text-md" onClick={() => handleRemove(item.product.id)}>
+                    <button
+                      className="btn btn-ghost btn-sm text-error text-md"
+                      onClick={() => handleRemove(item.product.id)}
+                    >
                       <BsTrash />
                     </button>
                   </th>
@@ -99,20 +117,8 @@ const Cart = () => {
             </tbody>
           </table>
         </div>
-        <div className="card bg-footer-bg p-8 grid gap-6 xl:w-[30%]">
-          <div className="flex justify-between border-b border-[#D8D8D8] pb-6">
-            <p>Sub Totals</p>
-            <p>${totalPrice.toFixed(2)}</p>
-          </div>
-          <div className="flex justify-between">
-            <p>Totals</p>
-            <p className='text-green'>${totalPrice.toFixed(2)}</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <BsCheckCircleFill className='text-green' />
-            <p className='text-grey'>Shipping & taxes calculated at checkout</p>
-          </div>
-          <button className="btn btn-primary">Proceed to checkout</button>
+        <div className="w-full lg:w-6/12 xl:w-4/12">
+          <OrderSummary />
         </div>
       </div>
     </Wrapper>
