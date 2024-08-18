@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { paymentMethodSchema } from '../validation/paymentMethodSchema';
 import { PaymentMethodFormErrors } from '../types';
 import CountrySelection from './shared/CountrySelection';
+import { setTimeout } from 'timers';
 
 type CountryOption = {
     value: string;
@@ -10,6 +11,7 @@ type CountryOption = {
 
 const PaymentMethod: React.FC = () => {
   const [errors, setErrors] = useState<Partial<PaymentMethodFormErrors>>({});
+  const [isSuccess, setIsSuccess] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<{ value: string; label: string } | null>(null);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -19,6 +21,7 @@ const PaymentMethod: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrors({});
     const formData = new FormData(e.target as HTMLFormElement);
     const values: PaymentMethodFormErrors = {
       firstName: formData.get('firstName') as string,
@@ -28,7 +31,10 @@ const PaymentMethod: React.FC = () => {
 
     try {
       paymentMethodSchema.parse(values);
-      // If successful, submit the data
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 2000)
     } catch (err: any) {
       setErrors(err.errors.reduce((acc: Partial<PaymentMethodFormErrors>, curr: any) => ({
         ...acc,
@@ -112,6 +118,7 @@ const PaymentMethod: React.FC = () => {
               )}
             </div>
           </div>
+          {isSuccess && <p className="text-green-dark">Data successfully saved</p>}
           <button className="btn btn-primary">Pay $59.35</button>
         </form>
       </div>

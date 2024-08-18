@@ -27,22 +27,24 @@ const OrderSummary:FC<OrderSummaryProps> = ({OrderSummary = false}) => {
               className="flex justify-between items-center py-2 border-b border-[#D8D8D8]"
               key={item.product.id}
             >
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-3 items-center">
+                <div className="bg-white p-2 rounded-md">
                 <Image
                   src={item.product.thumbnail}
                   alt={item.product.title}
                   width={60}
                   height={60}
                 />
+                </div>
                 <p className="font-medium">{item.product.title}</p>
               </div>
-              <p>${totalPrice.toFixed(2)}</p>
+              <p>${(item.product.price * item.quantity).toFixed(2)}</p>
             </div>
           ))}
           <div className="flex gap-2 mb-6 border-b border-[#D8D8D8] pb-6">
             <input
               type="text"
-              placeholder="Type here"
+              placeholder="Coupon Code"
               className="input input-bordered w-full"
             />
             <button className="btn btn-primary">Apply</button>

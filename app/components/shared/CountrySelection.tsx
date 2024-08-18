@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
-import Select, { SingleValue } from 'react-select';
+import React, { FC } from "react";
+import { BiBorderRadius } from "react-icons/bi";
+import Select, { SingleValue } from "react-select";
 
 type CountryOption = {
   value: string;
@@ -24,6 +25,15 @@ interface CountrySelectionProps {
   onChange?: (option: SingleValue<CountryOption>) => void;
 }
 
+const customStyles = {
+  control: (provided: any) => ({
+    ...provided,
+    height: "47px",
+    minHeight: "47px",
+    borderRadius: '.5rem',
+  }),
+};
+
 const CountrySelection: FC<CountrySelectionProps> = ({ value, onChange }) => {
   return (
     <>
@@ -31,6 +41,7 @@ const CountrySelection: FC<CountrySelectionProps> = ({ value, onChange }) => {
         Country
       </label>
       <Select
+        styles={customStyles}
         options={countries}
         value={value}
         onChange={onChange}

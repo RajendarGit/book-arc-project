@@ -11,6 +11,7 @@ type CountryOption = {
 
 const BillingDetails = () => {
   const [errors, setErrors] = useState<BillingDetailsErrors>({});
+  const [isSuccess, setIsSuccess] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<SingleValue<CountryOption>>(null);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -20,13 +21,18 @@ const BillingDetails = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrors({});
     const formData = new FormData(e.target as HTMLFormElement);
     const values = Object.fromEntries(formData.entries());
     values.country = selectedCountry?.value || "";
 
     try {
       billingDetailsSchema.parse(values);
-      // If successful, submit the data
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 2000);
+      
     } catch (err: any) {
       setErrors(
         err.errors.reduce(
@@ -117,6 +123,7 @@ const BillingDetails = () => {
             {errors.country && <p className="text-error">{errors.country}</p>}
           </div>
         </div>
+        {isSuccess && <p className="text-green-dark">Data successfully saved</p>}
         <button type="submit" className="btn btn-primary">
           Submit
         </button>

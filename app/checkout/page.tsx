@@ -31,5 +31,4 @@ const CheckoutPage = () => {
   );
 };
 
-// export default withCartProtection(CheckoutPage)
-export default CheckoutPage;
+export default withCartProtection(CheckoutPage)
