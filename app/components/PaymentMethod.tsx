@@ -32,6 +32,10 @@ const PaymentMethod: React.FC = () => {
     try {
       paymentMethodSchema.parse(values);
       setIsSuccess(true);
+
+      (e.target as HTMLFormElement).reset();
+      setSelectedCountry(null);
+      
       setTimeout(() => {
         setIsSuccess(false);
       }, 2000)

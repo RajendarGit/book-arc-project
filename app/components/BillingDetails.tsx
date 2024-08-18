@@ -12,7 +12,8 @@ type CountryOption = {
 const BillingDetails = () => {
   const [errors, setErrors] = useState<BillingDetailsErrors>({});
   const [isSuccess, setIsSuccess] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<SingleValue<CountryOption>>(null);
+  const [selectedCountry, setSelectedCountry] =
+    useState<SingleValue<CountryOption>>(null);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -29,10 +30,13 @@ const BillingDetails = () => {
     try {
       billingDetailsSchema.parse(values);
       setIsSuccess(true);
+
+      (e.target as HTMLFormElement).reset();
+      setSelectedCountry(null);
+      
       setTimeout(() => {
         setIsSuccess(false);
       }, 2000);
-      
     } catch (err: any) {
       setErrors(
         err.errors.reduce(
@@ -76,9 +80,7 @@ const BillingDetails = () => {
               placeholder="Type here"
               className="input w-full input-bordered"
             />
-            {errors.lastName && (
-              <p className="text-error">{errors.lastName}</p>
-            )}
+            {errors.lastName && <p className="text-error">{errors.lastName}</p>}
           </div>
         </div>
         <div className="grid grid-cols-1 gap-6">
@@ -114,7 +116,7 @@ const BillingDetails = () => {
             )}
           </div>
           <div>
-          {isMounted && (
+            {isMounted && (
               <CountrySelection
                 value={selectedCountry}
                 onChange={(newValue) => setSelectedCountry(newValue)}
@@ -123,7 +125,9 @@ const BillingDetails = () => {
             {errors.country && <p className="text-error">{errors.country}</p>}
           </div>
         </div>
-        {isSuccess && <p className="text-green-dark">Data successfully saved</p>}
+        {isSuccess && (
+          <p className="text-green-dark">Data successfully saved</p>
+        )}
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
