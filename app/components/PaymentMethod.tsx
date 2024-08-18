@@ -3,6 +3,8 @@ import { paymentMethodSchema } from '../validation/paymentMethodSchema';
 import { PaymentMethodFormErrors } from '../types';
 import CountrySelection from './shared/CountrySelection';
 import { setTimeout } from 'timers';
+import { useSelector } from 'react-redux';
+import { selectCartTotal } from '../features/cartSlice';
 
 type CountryOption = {
     value: string;
@@ -14,6 +16,8 @@ const PaymentMethod: React.FC = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<{ value: string; label: string } | null>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const totalPrice = useSelector(selectCartTotal);
+
 
   useEffect(() => {
     setIsMounted(true);
@@ -35,7 +39,7 @@ const PaymentMethod: React.FC = () => {
 
       (e.target as HTMLFormElement).reset();
       setSelectedCountry(null);
-      
+
       setTimeout(() => {
         setIsSuccess(false);
       }, 2000)
@@ -123,7 +127,7 @@ const PaymentMethod: React.FC = () => {
             </div>
           </div>
           {isSuccess && <p className="text-green-dark">Data successfully saved</p>}
-          <button className="btn btn-primary">Pay $59.35</button>
+          <button className="btn btn-primary">Pay ${totalPrice}</button>
         </form>
       </div>
     </section>
