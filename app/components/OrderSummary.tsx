@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React, { FC } from "react";
-import { AppDispatch } from "../store";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectCartItems, selectCartTotal } from "../features/cartSlice";
 import { BsCheckCircleFill } from "react-icons/bs";
+import Link from "next/link";
 
 
 interface OrderSummaryProps {
@@ -11,9 +11,12 @@ interface OrderSummaryProps {
 }
 
 const OrderSummary:FC<OrderSummaryProps> = ({OrderSummary = false}) => {
-  const dispatch: AppDispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const totalPrice = useSelector(selectCartTotal);
+
+  console.log("Cart Items:", cartItems);
+  console.log("Total Price:", totalPrice);
+
   return (
     <div className="card bg-footer-bg p-8 w-full">
       {OrderSummary ? (
@@ -21,7 +24,7 @@ const OrderSummary:FC<OrderSummaryProps> = ({OrderSummary = false}) => {
           <h4 className="font-medium text-xl">Order Summary</h4>
           {cartItems.map((item) => (
             <div
-              className="flex justify-between items-center py-2 border-b border-gray-300"
+              className="flex justify-between items-center py-2 border-b border-[#D8D8D8]"
               key={item.product.id}
             >
               <div className="flex gap-2 items-center">
@@ -31,9 +34,9 @@ const OrderSummary:FC<OrderSummaryProps> = ({OrderSummary = false}) => {
                   width={60}
                   height={60}
                 />
-                <p className="font-medium">sgsg</p>
+                <p className="font-medium">{item.product.title}</p>
               </div>
-              <p>$ 24.99</p>
+              <p>${totalPrice.toFixed(2)}</p>
             </div>
           ))}
           <div className="flex gap-2 mb-6 border-b border-[#D8D8D8] pb-6">
@@ -64,7 +67,7 @@ const OrderSummary:FC<OrderSummaryProps> = ({OrderSummary = false}) => {
                 Shipping & taxes calculated at checkout
               </p>
             </div>
-            <button className="btn btn-primary">Proceed to checkout</button>
+            <Link href='checkout' className="btn btn-primary">Proceed to checkout</Link>
           </>
         )}
       </div>

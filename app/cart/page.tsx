@@ -2,9 +2,9 @@
 import React from 'react';
 import Wrapper from '../components/shared/Wrapper';
 import Header from '../components/shared/Header';
-import { BsCheckCircleFill, BsTrash } from 'react-icons/bs';
+import { BsTrash } from 'react-icons/bs';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFromCart, updateQuantity, selectCartItems, selectCartTotal } from '@/app/features/cartSlice';
+import { removeFromCart, updateQuantity, selectCartItems } from '@/app/features/cartSlice';
 import Image from 'next/image';
 import { AppDispatch } from '../store';
 import withCartProtection from '../hoc/withCartProtection';
@@ -14,7 +14,6 @@ const Cart = () => {
   const breadcrumbs = [{ title: "Cart Page", link: "/cart" }];
   const dispatch: AppDispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
-  const totalPrice = useSelector(selectCartTotal);
 
   const handleQuantityChange = (id: number | undefined, quantity: number) => {
     if (id !== undefined) {
