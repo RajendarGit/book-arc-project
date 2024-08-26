@@ -127,7 +127,7 @@ const PaymentMethod: React.FC = () => {
             </div>
           </div>
           {isSuccess && <p className="text-green-dark">Data successfully saved</p>}
-          <button className="btn btn-primary">Pay ${totalPrice}</button>
+          <button className="btn btn-primary">Pay ${totalPrice.toFixed(2)}</button>
         </form>
       </div>
     </section>
