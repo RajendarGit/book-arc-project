@@ -1,34 +1,57 @@
-import React, { FC } from "react";
-interface Category {
-  id: number;
-  name: string;
+import React, { FC, useState } from "react";
+import { useSelector } from "react-redux";
+import {
+  selectAllProducts,
+  selectProductsStatus,
+} from "../features/productSlice";
+import LoadingFilterSkeleton from "./shared/LoadingFilterSkeleton";
+
+interface BookCategoryFilterProps {
+  onCategoryChange: (selectedCategories: string[]) => void;
 }
 
-const BookCategoryFilter: FC = () => {
-  const categories: Category[] = [
-    { id: 1, name: "Fiction" },
-    { id: 2, name: "Non-fiction" },
-    { id: 3, name: "Children Books" },
-    { id: 4, name: "Educational Textbooks" },
-    { id: 5, name: "Graphic Novels & Comics" },
-    { id: 6, name: "Religion & Spirituality" },
-    { id: 7, name: "Arts & Photography" },
-    { id: 8, name: "Special Collections" },
-  ];
+const BookCategoryFilter: FC<BookCategoryFilterProps> = ({
+  onCategoryChange,
+}) => {
+  const products = useSelector(selectAllProducts);
+  const status = useSelector(selectProductsStatus);
+  const uniqueCategories = Array.from(
+    new Set(products.map((product) => product.category))
+  );
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  const handleCategoryChange = (category: string) => {
+    const updatedCategories = selectedCategories.includes(category)
+      ? selectedCategories.filter((c) => c !== category)
+      : [...selectedCategories, category];
+
+    setSelectedCategories(updatedCategories);
+    onCategoryChange(updatedCategories);
+  };
+
   return (
     <div>
       <h5 className="text-black font-semibold mb-10">Books Category</h5>
-      <div className="form-control grid gap-5">
-        {categories.map((category) => (
-          <label
-            key={category.id}
-            className="cursor-pointer flex items-center gap-3"
-          >
-            <input type="checkbox" className="checkbox checkbox-success" />
-            <span className="label-text">{category.name}</span>
-          </label>
-        ))}
-      </div>
+      {status === "loading" ? (
+        <LoadingFilterSkeleton />
+      ) : (
+        <div className="form-control grid gap-5">
+          {uniqueCategories.map((category, index) => (
+            <label
+              key={index}
+              className="cursor-pointer flex items-center gap-3"
+            >
+              <input
+                type="checkbox"
+                className="checkbox checkbox-success"
+                checked={selectedCategories.includes(category)}
+                onChange={() => handleCategoryChange(category)}
+              />
+              <span className="label-text">{category}</span>
+            </label>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

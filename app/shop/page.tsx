@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import React, { useEffect, useState } from "react";
 import Header from "../components/shared/Header";
 import FilterSection from "../components/FilterSection";
@@ -19,6 +19,8 @@ const ITEMS_PER_PAGE = 6;
 
 const Shop = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
 
   const dispatch: AppDispatch = useDispatch();
   const products = useSelector(selectAllProducts);
@@ -33,9 +35,15 @@ const Shop = () => {
     return <p>Error: {error}</p>;
   }
 
-  const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category);
+    const matchesRating = selectedRatings.length === 0 || selectedRatings.includes(Math.round(product.rating));
+    return matchesCategory && matchesRating;
+  });
+
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const selectedProducts = products.slice(
+  const selectedProducts = filteredProducts.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
@@ -61,7 +69,10 @@ const Shop = () => {
       />
       <section className="md:flex md:flex-row md:gap-20 px-6 xl:px-0">
         <div className="lg:w-2/12 mb-10 lg:mb-0">
-          <FilterSection />
+          <FilterSection
+            onCategoryChange={setSelectedCategories}
+            onRatingChange={setSelectedRatings}
+          />
         </div>
         <div className="lg:w-10/12">
           {status === "loading" ? (
