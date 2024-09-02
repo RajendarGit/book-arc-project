@@ -1,0 +1,31 @@
+[
+    {
+      "id": 1,
+      "firstname": "Raj",
+      "lastname": "Kathir",
+      "email": "rajendar@example.com",
+      "password": "password123"
+    },
+    {
+      "id": 2,
+      "firstname": "Jane",
+      "lastname": "Smith",
+      "email": "jane.smith@example.com",
+      "password": "securePass456"
+    },
+    {
+      "id": 3,
+      "firstname": "Alice",
+      "lastname": "Johnson",
+      "email": "alice.johnson@example.com",
+      "password": "aliceSecure789"
+    },
+    {
+      "id": 4,
+      "firstname": "Bob",
+      "lastname": "Brown",
+      "email": "bob.brown@example.com",
+      "password": "bobStrongPwd001"
+    }
+  ]
+  

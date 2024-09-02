@@ -1,5 +1,6 @@
 import Image from "next/image";
-import React, { FC } from "react";
+import { useRouter } from "next/navigation";
+import React, { FC, useEffect, useState } from "react";
 import { BsStarFill } from "react-icons/bs";
 import { ProductProps } from "../types";
 
@@ -11,8 +12,27 @@ const ProductsCard: FC<ProductProps> = ({
   rating,
   tags,
   oneProduct = false,
-  addToCart
+  addToCart = () => {},
 }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const userToken = localStorage.getItem("userToken");
+    setIsLoggedIn(!!userToken); // Simplified the check
+  }, []);
+
+  const handleAddToCart = () => {
+    if (isLoggedIn) {
+      addToCart(); // Check if addToCart is defined before calling
+    } else {
+      router.push("/login");
+    }
+  };
+
+  // Round the rating to the nearest integer
+  const roundedRating = Math.round(rating);
+
   return (
     <div
       className={
@@ -35,17 +55,18 @@ const ProductsCard: FC<ProductProps> = ({
           {oneProduct
             ? title
             : title.length > 15
-            ? title.slice(0, 15) + "..."
+            ? `${title.slice(0, 15)}...`
             : title}
         </h2>
         <p className="mb-2 text-grey">{category}</p>
         <p className="text-xl text-green-dark font-medium">$ {price}</p>
+        {/* <p className="text-xl text-green-dark font-medium">{rating}</p> */}
         <div className="flex items-center gap-2">
           {Array.from({ length: 5 }, (_, index) => (
             <BsStarFill
               key={index}
               className={`${
-                index < rating ? "text-[#FF971D]" : "text-[#DEDEDE]"
+                index < roundedRating ? "text-[#FF971D]" : "text-[#DEDEDE]"
               }`}
             />
           ))}
@@ -54,7 +75,7 @@ const ProductsCard: FC<ProductProps> = ({
           <div className="sm:flex items-center gap-4">
             <p className="my-3 sm:my-0 flex-grow-0">Category:</p>
             <div className="flex gap-2">
-              {tags?.map((tag, index) => (
+              {tags.map((tag, index) => (
                 <p
                   key={index}
                   className="bg-green bg-opacity-15 text-green-dark py-[4px] px-[15px] text-center rounded-2xl"
@@ -65,17 +86,17 @@ const ProductsCard: FC<ProductProps> = ({
             </div>
           </div>
         )}
-        {oneProduct ? (
+        {oneProduct && (
           <>
             <div className="card-actions justify-start my-3">
               <button className="btn min-w-[120px] btn-primary">Buy Now</button>
-              <button className="btn min-w-[120px]" onClick={addToCart}>
+              <button className="btn min-w-[120px]" onClick={handleAddToCart}>
                 Add to cart
               </button>
             </div>
             <p className="text-grey">Lifetime Access</p>
           </>
-        ) : null}
+        )}
       </div>
     </div>
   );

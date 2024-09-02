@@ -4,10 +4,11 @@ import "./globals.css";
 import { NavBar } from "./components/shared/NavBar";
 import Footer from "./components/shared/Footer";
 import Providers from "./providers";
+import { AuthProvider } from "./context/authContext";
 
 const poppins = Poppins({
-  weight: ['400', '500', '700'],
-  subsets: ['latin'],
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -17,18 +18,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <Providers>
-    <html lang="en" data-theme="light">
-      <body className={poppins.className}>
-        <NavBar />
-        <main className="container mx-auto">{children}</main>
-        <Footer />
-      </body>
-    </html>
+      <AuthProvider>
+        <html lang="en" data-theme="light">
+          <body className={poppins.className}>
+            <NavBar />
+            <main>{children}</main>
+            <Footer />
+          </body>
+        </html>
+      </AuthProvider>
     </Providers>
   );
 }
